@@ -112,7 +112,7 @@ create table employees (EMPLOYEE_ID  int , FIRST_NAME  varchar(50), LAST_NAME   
 
 --1 From the following table, write a SQL query to find those employees 
  --whose salaries are less than 6000. Return full name (first and last name), and salary.
-select FIRST_NAME , LAST_NAME ,SALARY from employees
+select CONCAT(first_name,last_name) AS full_name  ,SALARY from employees
 where SALARY < 6000 
 
 --2 From the following table, write a SQL query to find those employees 
