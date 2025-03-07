@@ -1,6 +1,5 @@
 create table employees (EMPLOYEE_ID  int , FIRST_NAME  varchar(50), LAST_NAME   varchar(50) , EMAIL    varchar(50) , PHONE_NUMBER   varchar(50)    
-, HIRE_DATE  date, JOB_ID varchar(50)    , SALARY float  , COMMISSION_PCT float , MANAGER_ID int , DEPARTMENT_ID int) 																																							 )
---	drop table 		employees	
+, HIRE_DATE  date, JOB_ID varchar(50)    , SALARY float  , COMMISSION_PCT float , MANAGER_ID int , DEPARTMENT_ID int) 		
  insert into employees  values
 (100 , 'Steven     ' , 'King        ', 'SKING    ', '515.123.4567       ', '2003-06-17' ,'AD_PRES', 24000.00 ,0.00 ,   0 ,   90),
 (101 , 'Neena      ' , 'Kochhar     ', 'NKOCHHAR ', '515.123.4568       ', '2005-09-21' ,'AD_VP', 17000.00 ,0.00 , 100 ,   90),
