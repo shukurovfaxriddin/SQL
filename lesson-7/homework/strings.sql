@@ -1,146 +1,175 @@
---easy /1
-use [homework 4/5]
+--1. Find the minimum price of a product in the Products table
 
-select min(Price) as minPrice  from Products1
+SELECT MIN(Price) AS MinPrice
+FROM Products;
+--2. Find the maximum salary from the Employees table
 
---2
-select max(Salary) as maxSalary  from Employees
+SELECT MAX(Salary) AS MaxSalary
+FROM Employees;
+--3. Count the number of rows in the Customers table
 
---3
-select count(*) as countrow  from [Customers1]
+SELECT COUNT(*) AS TotalCustomers
+FROM Customers;
+--4. Count the number of unique product categories
 
---4
-select count(distinct Category) as uniqcategories  from Products1
+SELECT COUNT(DISTINCT Category) AS UniqueCategories
+FROM Products;
+--5. Find the total sales amount for product with ID = 7
 
---5
-select ProductID , sum(SaleAmount) as totalSales from [dbo].[Sales]
-group by ProductID
+SELECT SUM(SalesAmount) AS TotalSales
+FROM Sales
+WHERE ProductID = 7;
+--6. Calculate average age of employees
 
---6
-select  avg(age) as ageEmployees  from Employees
+SELECT AVG(Age) AS AvgAge
+FROM Employees;
+--7. Count the number of employees in each department
 
---7
-select DepartmentName ,count(EmployeeName) as countDepartment  from [dbo].[EmployeeDepartments]
-group by DepartmentName
+SELECT DeptID, COUNT(*) AS EmployeeCount
+FROM Employees
+GROUP BY DeptID;
+--8. Show min and max price of products grouped by category
 
---8
-select Category ,max(Price) as maxPrice ,min(Price) as minPrice  from [Products1]
-group by Category
+SELECT Category, 
+       MIN(Price) AS MinPrice, 
+       MAX(Price) AS MaxPrice
+FROM Products
+GROUP BY Category;
+--9. Calculate total sales per customer
 
---9
-select CustomerID ,sum(SaleAmount) as sumSaleAmount from [Sales]
-group by CustomerID
+SELECT CustomerID, SUM(SalesAmount) AS TotalSales
+FROM Sales
+GROUP BY CustomerID;
+--10. Filter departments having more than 5 employees
+OUNT(*) AS EmployeeCount
+FROM Employees
+GROUP BY DeptID
+HAVING COUNT(*) > 5;
 
---10
+--
+--1. Total and average sales for each product category
+
 SELECT 
-    DepartmentID, 
-    COUNT(EmployeeID) AS NumberOfEmployees
-FROM 
-    Employees
-GROUP BY 
-    DepartmentID
-HAVING 
-    COUNT(EmployeeID) > 5;
+    p.Category,
+    SUM(s.SalesAmount) AS TotalSales,
+    AVG(s.SalesAmount) AS AvgSales
+FROM Sales s
+JOIN Products p ON s.ProductID = p.ProductID
+GROUP BY p.Category;
+--2. Count employees in the ‘HR’ department
 
-	--task 2 / 1
-  select ProductID ,sum(SaleAmount) as totalSales, avg(SaleAmount) as avgSales from [dbo].[Sales]
-group by ProductID
-select * from [Sales]
+SELECT COUNT(EmpID) AS HR_EmployeeCount
+FROM Employees
+WHERE Department = 'HR';
+--3. Highest and lowest salary by department
 
---2
-select DepartmentName ,count(EmployeeName) as countEmployeeName from EmployeeDepartments
-group by DepartmentName
-
---3 select *  from Employees
-select DepartmentID ,max(Salary) as maxPrice ,min(Salary) as minPrice  from Employees
-group by DepartmentID
-
---4
-select DepartmentID ,avg(Salary) as avgSalary  from Employees
-group by DepartmentID
-
---5
-select DepartmentID ,avg(Salary) as avgSalary,count(Salary) as countSalary from Employees
-group by DepartmentID
-
---6 select * from Products1
-select Category,avg(price) as avgprice  from Products1
-group by Category
-having   avg(price) > 100;
-
---7 select * from Sales
-select count(distinct ProductID) as uniqcategories  from Sales
-
---8
 SELECT 
-    YEAR(SaleDate) AS SalesYear, 
-    SUM(SaleAmount) AS TotalSales
-FROM 
-    Sales
-GROUP BY 
-    YEAR(SaleDate)
-ORDER BY 
-    SalesYear;
+    DeptID,
+    MAX(Salary) AS MaxSalary,
+    MIN(Salary) AS MinSalary
+FROM Employees
+GROUP BY DeptID;
+--4. Average salary per department
 
-	--9
-	select Status ,count(distinct CustomerID) as countCustomerID from Orders1 
-	group by Status
-
-	--10
-	SELECT 
-    DepartmentID, sum(Salary) AS NumberOfEmployees
-FROM  Employees
-GROUP BY 
-    DepartmentID
-HAVING 
-   sum(Salary) > 100000;
-
-   
---task 3 /1
-select ProductID ,avg(SaleAmount) as avgSaleAmount  from [dbo].[Sales]
-group by ProductID
-having avg(SaleAmount) > 200
-
---2
-select DepartmentID ,sum(salary) as sumSaleAmount  from Employees
-group by DepartmentID
-having sum(salary) > 5000
-
---3
-select DepartmentID ,sum(salary) as sumSaleAmount,avg(salary) as avgSaleAmount  from Employees
-group by DepartmentID
-having avg(salary) > 6000
-
---4 select * from Orders
-select CustomerID, max(TotalAmount) as maxAmount,min(TotalAmount) as minAmount  from Orders
-group by CustomerID
-having max(TotalAmount) >= 50
-
---5
- 
- --6 select * from [dbo].[Products1]
- select p.Category,p.ProductName, max(Quantity) as maxAmount,min(Quantity) as minAmount from Orders o
- join Products1 p on o.ProductID = p.ProductID
- group by p.Category , p.ProductName
-
- --7
-
- --8
- SELECT 
-    ProductID, 
-    Quarter, 
-    SalesAmount
-FROM 
-    (SELECT ProductID, Q1, Q2, Q3, Q4 FROM Sales) s
-UNPIVOT 
-    (SalesAmount FOR Quarter IN (Q1, Q2, Q3, Q4)) AS unpvt;
-
-	--9 select * from [dbo].[Products1]
 SELECT 
-    p.Category, 
-    p.ProductName, 
-    COUNT(o.TotalAmount) AS TotalOrders
-FROM Orders o
-JOIN Products1 p ON o.ProductID = p.ProductID
-GROUP BY p.Category, p.ProductName
-HAVING COUNT(o.TotalAmount) > 50;
+    DeptID,
+    AVG(Salary) AS AvgSalary
+FROM Employees
+GROUP BY DeptID;
+--5. AVG salary and COUNT of employees per department
+
+SELECT 
+    DeptID,
+    AVG(Salary) AS AvgSalary,
+    COUNT(*) AS EmployeeCount
+FROM Employees
+GROUP BY DeptID;
+--6. Product categories with AVG price > 400
+
+SELECT 
+    Category,
+    AVG(Price) AS AvgPrice
+FROM Products
+GROUP BY Category
+HAVING AVG(Price) > 400;
+--7. Total sales for each year
+
+SELECT 
+    YEAR(SaleDate) AS SalesYear,
+    SUM(SalesAmount) AS TotalSales
+FROM Sales
+GROUP BY YEAR(SaleDate);
+--8. Customers with at least 3 orders
+
+SELECT 
+    CustomerID,
+    COUNT(*) AS OrderCount
+FROM Sales
+GROUP BY CustomerID
+HAVING COUNT(*) >= 3;
+--9. Departments with total salary expenses > 500,000
+
+SELECT 
+    DeptID,
+    SUM(Salary) AS TotalSalary
+FROM Employees
+GROUP BY DeptID
+HAVING SUM(Salary) > 500000;
+
+
+
+--
+--1. AVG sales for each product category, filter AVG > 200
+
+SELECT 
+    p.Category,
+    AVG(s.SalesAmount) AS AvgSales
+FROM Sales s
+JOIN Products p ON s.ProductID = p.ProductID
+GROUP BY p.Category
+HAVING AVG(s.SalesAmount) > 200;
+--2. SUM sales per Customer, filter SUM > 1500
+
+SELECT 
+    CustomerID,
+    SUM(SalesAmount) AS TotalSales
+FROM Sales
+GROUP BY CustomerID
+HAVING SUM(SalesAmount) > 1500;
+--3. SUM and AVG salary per department, filter AVG > 65000
+
+SELECT 
+    DeptID,
+    SUM(Salary) AS TotalSalary,
+    AVG(Salary) AS AvgSalary
+FROM Employees
+GROUP BY DeptID
+HAVING AVG(Salary) > 65000;
+--4. MAX and MIN order value per customer, exclude MAX < 50
+
+SELECT 
+    CustomerID,
+    MAX(SalesAmount) AS MaxOrder,
+    MIN(SalesAmount) AS MinOrder
+FROM Sales
+GROUP BY CustomerID
+HAVING MAX(SalesAmount) >= 50;
+Agar siz barcha xaridlar ichidan har bir mijoz uchun buyurtma qiymatini ko‘rsatayotgan bo‘lsangiz.
+
+--5. Total sales and distinct products per month, filter > 8 products
+
+SELECT 
+    MONTH(SaleDate) AS SaleMonth,
+    SUM(SalesAmount) AS TotalSales,
+    COUNT(DISTINCT ProductID) AS DistinctProducts
+FROM Sales
+GROUP BY MONTH(SaleDate)
+HAVING COUNT(DISTINCT ProductID) > 8;
+--6. MIN and MAX order quantity per year (from Orders table)
+
+SELECT 
+    YEAR(OrderDate) AS OrderYear,
+    MIN(OrderQuantity) AS MinQty,
+    MAX(OrderQuantity) AS MaxQty
+FROM Orders
+GROUP BY YEAR(OrderDate);
